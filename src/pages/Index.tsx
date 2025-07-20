@@ -2,13 +2,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Camera, ChefHat, Sparkles, Utensils, Eye, Palette } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
+import dishesBg from "@/assets/dishes-bg.jpg";
+import ingredientsBg from "@/assets/ingredients-bg.jpg";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-background to-secondary/5">
-        <div className="container mx-auto px-4 py-16 sm:py-24">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0">
+          <img 
+            src={heroBg} 
+            alt="Restaurant kitchen background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/90 to-background/95"></div>
+        </div>
+        <div className="relative container mx-auto px-4 py-16 sm:py-24">
           <div className="text-center space-y-8">
             <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full text-sm font-medium text-primary">
               <Sparkles className="w-4 h-4" />
@@ -40,8 +51,15 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-16 sm:py-24">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 sm:py-24">
+        <div className="absolute inset-0 opacity-10">
+          <img 
+            src={dishesBg} 
+            alt="Plated dishes background" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="relative container mx-auto px-4">
           <div className="text-center space-y-4 mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
               Perfect every dish before service
@@ -92,8 +110,16 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-24 bg-muted/30">
-        <div className="container mx-auto px-4">
+      <section className="relative py-16 sm:py-24">
+        <div className="absolute inset-0">
+          <img 
+            src={ingredientsBg} 
+            alt="Fresh ingredients background" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-muted/95"></div>
+        </div>
+        <div className="relative container mx-auto px-4">
           <Card className="max-w-4xl mx-auto text-center border-border/50">
             <CardHeader className="space-y-6 py-12">
               <CardTitle className="text-3xl sm:text-4xl font-bold">
