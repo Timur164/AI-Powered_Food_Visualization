@@ -1,73 +1,110 @@
-# Welcome to your Lovable project
+# AI-Powered Food Visualization
 
-## Project info
+A modern web application that transforms restaurant menus into visual experiences using AI. Upload a photo of any menu, and the app will automatically extract text, identify the top dishes, and generate photorealistic images of each dish.
 
-**URL**: https://lovable.dev/projects/06b7ce9c-2f71-4847-aa88-3769a8448c4c
+## Features
 
-## How can I edit this code?
+- **Menu Text Extraction (OCR)**: Uses [Tesseract.js](https://github.com/naptha/tesseract.js) for client-side image text recognition from uploaded menu images
+- **Smart Menu Analysis**: Leverages ChatGPT to identify and describe the top 5 most appealing dishes
+- **AI Image Generation**: Creates photorealistic food images using DALL·E
+- **Dual Input Methods**: Support for both image upload and direct camera capture
+- **Real-time Processing**: Shows loading states and progress for each step
+- **Responsive Design**: Works seamlessly on both desktop and mobile devices
+- **Error Handling**: Comprehensive error states for OCR, API calls, and image generation
+- **Example Mode**: Built-in example viewer with curated dishes and images
 
-There are several ways of editing your application.
+## Tech Stack
 
-**Use Lovable**
+- **Frontend**: React + TypeScript + Vite
+- **UI Components**: Shadcn/ui
+- **Styling**: Tailwind CSS
+- **OCR (Image Text Recognition)**: [Tesseract.js](https://github.com/naptha/tesseract.js)
+- **AI Integration**: OpenAI (GPT-3.5 + DALL·E)
+- **HTTP Client**: Axios
+- **Icons**: Lucide React
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/06b7ce9c-2f71-4847-aa88-3769a8448c4c) and start prompting.
+## Getting Started
 
-Changes made via Lovable will be committed automatically to this repo.
+### Prerequisites
 
-**Use your preferred IDE**
+- Node.js (v16 or higher)
+- npm or yarn
+- OpenAI API key
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Installation
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd AI-Powered_Food_Visualization
+```
 
-Follow these steps:
+2. Install dependencies:
+```bash
+npm install
+```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3. Create a `.env` file in the root directory:
+```env
+VITE_OPENAI_API_KEY=your_openai_api_key_here
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+4. Start the development server:
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The application will be available at `http://localhost:5173` (or your configured port).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Usage
 
-**Use GitHub Codespaces**
+1. **Start Creating**:
+   - Click "Start Creating" button
+   - Choose to either upload an image or take a photo
+   - Select or capture a menu image
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. **Automatic Processing**:
+   - The app will automatically extract text from the image using Tesseract.js (OCR)
+   - ChatGPT will analyze the menu and select top 5 dishes
+   - DALL·E will generate photorealistic images for each dish
 
-## What technologies are used for this project?
+3. **View Results**:
+   - See the recommended dishes with their descriptions
+   - View the AI-generated images for each dish
+   - Loading states and error messages will guide you through the process
 
-This project is built with:
+4. **Example Mode**:
+   - Click "View Examples" to see sample dishes and images
+   - Explore the app's capabilities with curated content
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Error Handling
 
-## How can I deploy this project?
+The application handles various error cases:
+- Invalid image uploads
+- OCR text extraction failures (Tesseract.js)
+- Non-menu image detection
+- API rate limits
+- Image generation failures
+- Network connectivity issues
 
-Simply open [Lovable](https://lovable.dev/projects/06b7ce9c-2f71-4847-aa88-3769a8448c4c) and click on Share -> Publish.
+## Performance Considerations
 
-## Can I connect a custom domain to my Lovable project?
+- Optimized DALL·E API calls to handle rate limits
+- Efficient image processing and display
+- Responsive UI with loading states
+- Parallel processing where possible
 
-Yes, you can!
+## Contributing
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- OpenAI for GPT and DALL·E APIs
+- [Tesseract.js](https://github.com/naptha/tesseract.js) for OCR capabilities
+- Shadcn/ui for beautiful UI components
+- All other open-source contributors
