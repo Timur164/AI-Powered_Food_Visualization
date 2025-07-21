@@ -31,133 +31,47 @@ const MOCK_IMAGES = [
   paellaImg
 ];
 
-// --- API CALL HELPERS ---
-const openaiApiKey = import.meta.env.VITE_OPENAI_API_KEY;
+// Backend API base URL - use environment variable or default to localhost
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8002/api';
 
-// Helper for delay
-function delay(ms: number) {
-  return new Promise(res => setTimeout(res, ms));
-}
-
-// Fetch dish info from GPT
+// Fetch dish info from backend
 export async function fetchDishInfos(extractedText: string): Promise<{ name: string; description: string }[]> {
-  const gptResponse = await axios.post(
-    "https://api.openai.com/v1/chat/completions",
-    {
-      model: "gpt-3.5-turbo",
-      messages: [
-        {
-          role: "system",
-          content:
-            "You are a helpful assistant that extracts dish names and short, appetizing descriptions from restaurant menus. If the provided text is not a food menu, reply with ONLY the word 'ERROR'. If it is a menu, choose the top 5 dishes by your own opinion (based on popularity, uniqueness, or taste appeal) and reply with a JSON array of 5 objects, each with 'name' (dish name) and 'description' (a short, appetizing description of the dish). Reply ONLY with the JSON array or 'ERROR'. Example: [{\"name\":\"Tiramisu\",\"description\":\"Classic Italian dessert with coffee-soaked ladyfingers and mascarpone cream\"}, ...]",
-        },
-        {
-          role: "user",
-          content: extractedText,
-        },
-      ],
-      temperature: 0.2,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${openaiApiKey}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  let gptContent = gptResponse.data.choices[0].message.content.trim();
-  if (gptContent === "ERROR") {
-    throw new Error("The uploaded image does not appear to be a food menu. Please try again.");
-  }
-  // Extract JSON array from code block if present
-  const codeBlockMatch = gptContent.match(/```(?:json)?\n([\s\S]*?)```/i);
-  if (codeBlockMatch) {
-    gptContent = codeBlockMatch[1].trim();
-  }
-  let dishes: { name: string; description: string }[] = [];
   try {
-    dishes = JSON.parse(gptContent);
-    if (!Array.isArray(dishes) || dishes.length === 0) throw new Error();
-  } catch {
-    throw new Error("Failed to extract dishes from menu. Please try another image.");
+    const response = await axios.post(`${BACKEND_URL}/analyze-menu`, {
+      menuText: extractedText
+    });
+    
+    return response.data.dishes;
+  } catch (error: any) {
+    if (error.response?.data?.error) {
+      throw new Error(error.response.data.error);
+    } else {
+      throw new Error('Failed to analyze menu. Please try again.');
+    }
   }
-  return dishes;
 }
 
-// Fetch DALL·E images for each dish (staggered, update UI as each arrives)
+// Fetch DALL·E images for each dish
 export async function fetchDalleImages(
   dishes: { name: string; description: string }[],
   setDishImageErrors: React.Dispatch<React.SetStateAction<boolean[]>>,
   setDishImages: React.Dispatch<React.SetStateAction<(string | null)[]>>
 ): Promise<(string | null)[]> {
-  // If all dish names are the same, use a single DALL·E request for n images
-  const allSame = dishes.every(d => d.name === dishes[0].name);
-  if (allSame) {
-    try {
-      const dalleResponse = await axios.post(
-        "https://api.openai.com/v1/images/generations",
-        {
-          prompt: `A photorealistic, realistic, beautifully plated, tasty-looking dish: ${dishes[0].name}. Professional food photography, restaurant menu style, high detail, vibrant colors, no text, no watermark, no people, only the dish on a clean background, 4k, studio lighting, shallow depth of field.`,
-          n: 5,
-          size: "512x512",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${openaiApiKey}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const urls = dalleResponse.data.data.map((img: any) => img.url);
-      setDishImages(urls); // direct assignment, fixes linter error
-      setDishImageErrors(Array(dishes.length).fill(false));
-      return urls;
-    } catch (err) {
-      setDishImageErrors(Array(dishes.length).fill(true));
-      setDishImages(Array(dishes.length).fill(null));
-      return Array(dishes.length).fill(null);
-    }
+  try {
+    const response = await axios.post(`${BACKEND_URL}/generate-images`, {
+      dishes: dishes
+    });
+    
+    const images = response.data.images;
+    setDishImages(images);
+    setDishImageErrors(Array(dishes.length).fill(false));
+    return images;
+  } catch (error: any) {
+    console.error('Error generating images:', error);
+    setDishImageErrors(Array(dishes.length).fill(true));
+    setDishImages(Array(dishes.length).fill(null));
+    return Array(dishes.length).fill(null);
   }
-  // Otherwise, use staggered per-dish requests
-  const results: (string | null)[] = Array(5).fill(null);
-  const promises = dishes.slice(0, 5).map((dish, idx) =>
-    new Promise<void>(resolve => {
-      setTimeout(async () => {
-        try {
-          const dalleResponse = await axios.post(
-            "https://api.openai.com/v1/images/generations",
-            {
-              prompt: `A photorealistic, realistic, beautifully plated, tasty-looking dish: ${dish.name}. Professional food photography, restaurant menu style, high detail, vibrant colors, no text, no watermark, no people, only the dish on a clean background, 4k, studio lighting, shallow depth of field.`,
-              n: 1,
-              size: "512x512",
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${openaiApiKey}`,
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          results[idx] = dalleResponse.data.data[0].url;
-        } catch {
-          setDishImageErrors(prev => {
-            const copy = [...prev];
-            copy[idx] = true;
-            return copy;
-          });
-          results[idx] = null;
-        }
-        setDishImages(prev => {
-          const copy = [...prev];
-          copy[idx] = results[idx];
-          return copy;
-        });
-        resolve();
-      }, idx * 500);
-    })
-  );
-  await Promise.all(promises);
-  return results;
 }
 
 const Index = () => {
