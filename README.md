@@ -2,6 +2,10 @@
 
 A modern web application that transforms restaurant menus into visual experiences using AI. Upload a photo of any menu, and the app will automatically extract text, identify the top dishes, and generate photorealistic images of each dish.
 
+<img width="942" height="787" alt="image" src="https://github.com/user-attachments/assets/a3f4c0f6-f107-4b2d-89f3-827cfc69f742" />
+
+
+
 ## Features
 
 - **Menu Text Extraction (OCR)**: Uses [Tesseract.js](https://github.com/naptha/tesseract.js) for client-side image text recognition from uploaded menu images
