@@ -149,7 +149,11 @@ def health_check():
 
 @app.route('/', methods=['GET'])
 def root():
-    return jsonify({'message': 'Food Visualization Backend is running!'})
+    return jsonify({
+        'message': 'Food Visualization Backend is running!',
+        'port': os.getenv('PORT', '5000'),
+        'timestamp': time.time()
+    })
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
