@@ -13,4 +13,13 @@ services:
       - key: REPLICATE_API_TOKEN
         sync: false
       - key: PORT
-        value: 8002 
+        value: 8002
+
+  - type: web
+    name: ai-powered-food-visualization-frontend
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: https://ai-powered-food-visualization-backend.onrender.com/api 
