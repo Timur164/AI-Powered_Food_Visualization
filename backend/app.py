@@ -12,18 +12,12 @@ import replicate
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={
-    r"/api/*": {
-        "origins": [
-            "http://localhost:8080",
-            "http://localhost:5173",
-            "http://localhost:3000",
-            "https://gastro-vista-ai.lovable.app"
-        ],
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"]
-    }
-})
+CORS(app, origins=[
+    "http://localhost:8080",
+    "http://localhost:5173", 
+    "http://localhost:3000",
+    "https://gastro-vista-ai.lovable.app"
+], supports_credentials=True)
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
@@ -36,17 +30,7 @@ else:
 
 @app.after_request
 def after_request(response):
-    origin = request.headers.get('Origin')
-    allowed = [
-        "http://localhost:8080",
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "https://gastro-vista-ai.lovable.app"
-    ]
-    if origin in allowed:
-        response.headers['Access-Control-Allow-Origin'] = origin
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    # Flask-CORS handles CORS headers automatically
     return response
 
 @app.route('/api/analyze-menu', methods=['POST'])
