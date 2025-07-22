@@ -1,6 +1,11 @@
 # AI-Powered Food Visualization
 
-A web application that uses AI to analyze food menus and generate appetizing images of dishes. Users can upload or take photos of restaurant menus, and the app will extract the top 5 dishes and generate photorealistic images for each.
+A web application that uses AI to analyze food menus and generate appetizing images of dishes. Users can upload or take photos of restaurant menus, and the app will extract the top 5 dishes and generate photorealistic images for each. 
+
+The WebSite - https://gastro-vista-ai.lovable.app/
+
+<img width="942" height="787" alt="Screenshot 2025-07-21 at 09 20 46" src="https://github.com/user-attachments/assets/eeb3083b-26d1-4d3a-b8df-6e97b7b37da2" />
+
 
 ## Features
 
