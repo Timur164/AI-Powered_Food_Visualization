@@ -4,25 +4,13 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_BACKEND_URL=https://ai-powered-food-visualization.onrender.com/api
     ports:
       - "3000:3000"
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    ports:
-      - "8002:8002"
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - PORT=8002
-    env_file:
-      - ./backend/.env
+      - NODE_ENV=production
     networks:
       - app-network
 
