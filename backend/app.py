@@ -103,15 +103,18 @@ def generate_images():
 
         for i, dish in enumerate(dishes[:5]):  # Limit to 5 dishes
             try:
-                prompt = f"A photorealistic, realistic, beautifully plated, tasty-looking dish: {dish['name']}. {dish['description']} Professional food photography, restaurant menu style, high detail, vibrant colors, no text, no watermark, no people, only the dish on a clean background, 4k, studio lighting, shallow depth of field."
+                # Using SDXL 1.0 for ultra-high quality 1024x1024 food photography
+                prompt = f"A photorealistic, beautifully plated dish on a white ceramic plate: {dish['name']}. {dish['description']} Professional food photography, restaurant menu style, ultra high detail, vibrant colors, no text, no watermark, no people, the dish is properly plated on a clean white plate, 4k, studio lighting, shallow depth of field, mouthwatering, delicious looking, food photography, culinary art, masterpiece, award-winning photography, elegant plating."
                 input = {
                     "prompt": prompt,
-                    "scheduler": "K_EULER",
-                    "width": 512,
-                    "height": 512
+                    "width": 1024,
+                    "height": 1024,
+                    "num_inference_steps": 25,
+                    "guidance_scale": 7.5,
+                    "scheduler": "K_EULER"
                 }
                 output = replicate_client.run(
-                    "stability-ai/stable-diffusion:ac732df83cea7fff18b8472768c88ad041fa750ff7682a21affe81863cbe77e4",
+                    "stability-ai/sdxl:39ed52f2a78e934b3ba6e2a89f5b1c712de7dfea535525255b1aa35c5565e08b",
                     input=input
                 )
                 # output is a list of URLs
