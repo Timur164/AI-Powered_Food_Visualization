@@ -145,9 +145,15 @@ def generate_images():
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    return jsonify({'status': 'healthy'})
+    return jsonify({'status': 'healthy', 'port': os.getenv('PORT', '5000')})
+
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({'message': 'Food Visualization Backend is running!'})
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
     debug_mode = os.getenv('FLASK_ENV') == 'development'
+    print(f"Starting Flask app on port {port}", file=sys.stderr)
+    print(f"Debug mode: {debug_mode}", file=sys.stderr)
     app.run(debug=debug_mode, host='0.0.0.0', port=port) 

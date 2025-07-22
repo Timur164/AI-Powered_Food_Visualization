@@ -3,8 +3,8 @@ services:
     name: ai-powered-food-visualization-backend
     env: python
     plan: free
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && python app.py
+    buildCommand: pip install -r requirements.txt
+    startCommand: python backend/app.py
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
