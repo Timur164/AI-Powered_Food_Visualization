@@ -17,7 +17,8 @@ CORS(app, resources={
         "origins": [
             "http://localhost:8080",
             "http://localhost:5173",
-            "http://localhost:3000"
+            "http://localhost:3000",
+            "https://gastro-vista-ai.lovable.app"
         ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type", "Authorization"]
@@ -39,7 +40,8 @@ def after_request(response):
     allowed = [
         "http://localhost:8080",
         "http://localhost:5173",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "https://gastro-vista-ai.lovable.app"
     ]
     if origin in allowed:
         response.headers['Access-Control-Allow-Origin'] = origin
@@ -147,4 +149,5 @@ def health_check():
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port) 
+    debug_mode = os.getenv('FLASK_ENV') == 'development'
+    app.run(debug=debug_mode, host='0.0.0.0', port=port) 
