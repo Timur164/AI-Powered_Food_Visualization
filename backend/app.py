@@ -16,7 +16,7 @@ CORS(app, origins=[
     "http://localhost:8080",
     "http://localhost:5173", 
     "http://localhost:3000",
-    "https://gastro-vista-ai.lovable.app"
+    "https://ai-powered-food-visualization-frontend.onrender.com"
 ], supports_credentials=True)
 
 # Initialize OpenAI client
